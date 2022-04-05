@@ -9,7 +9,7 @@ public class Website {
         this.url = url;
     }
     public void setSearchUrl(String slug) {
-        this.searchUrl = this.url+"/"+slug;
+        this.searchUrl = this.url+slug;
     }
 
     public Elements searchAnime(String query) {
