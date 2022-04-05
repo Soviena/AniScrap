@@ -5,8 +5,11 @@ import org.jsoup.select.Elements;
 
 
 public class Menu {
-    public static void mainMenu() {
-        
+    public static String mainMenu() {
+        Scanner input= new Scanner(System.in); 
+        String x = input.nextLine();
+        input.close();
+        return x;
     }
 
     public static void searchAnime(Website web) {
