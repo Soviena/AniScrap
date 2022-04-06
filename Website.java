@@ -12,12 +12,18 @@ public class Website {
         this.searchUrl = this.url+slug;
     }
 
-    public Elements searchAnime(String query) {
+    public Anime[] searchAnime(String query) {
         // System.out.println(page);
         Elements articles = Scrapper.parseWeb(this.searchUrl+query).getElementsByClass("inf");
-        Elements animes = new Elements();
+        Elements rawAnimes = new Elements();
+        Anime[] animes = new Anime[articles.size()];
+        int i = 0;
         for (Element article : articles) {
-            animes.addAll(article.getElementsByTag("a"));
+            rawAnimes.addAll(article.getElementsByTag("a"));
+        }
+        for (Element anime : rawAnimes) {
+            animes[i] = new Anime(anime.attr("title"),anime.attr("href"));
+            i++;
         }
         return animes;
     }
