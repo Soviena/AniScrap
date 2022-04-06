@@ -6,13 +6,17 @@ import org.jsoup.select.Elements;
 
 public class Menu {
     public static String mainMenu() {
-        Scanner input= new Scanner(System.in); 
+        Scanner input= new Scanner(System.in);
+        System.out.println("\nMain Menu\n");
+        System.out.println("[S] Untuk Search Anime");
+        System.out.println("[H] Untuk Melihat History");
+        System.out.println("[A] Untuk Melihat Upload Terbaru");
+        System.out.print("[X] Untuk Keluar\n\nInput : ");
         String x = input.nextLine();
-        input.close();
-        return x;
+        return x.toLowerCase();
     }
 
-    public static void searchAnime(Website web) {
+    public static String searchAnime(Website web) {
         Scanner input= new Scanner(System.in); 
         System.out.print("Cari Anime : "); String query = input.nextLine();
         Elements animes = web.searchAnime(query);
@@ -21,7 +25,8 @@ public class Menu {
             System.out.printf("[%d] %s\n",i,anime.attr("title").replaceAll("Nonton anime ", ""));
             i++;
         }
-        input.close();
+        System.out.print("\nPilih Anime : "); i = Integer.valueOf(input.nextLine());
+        return animes.get(i-1).attr("href");
     }
 
 }
