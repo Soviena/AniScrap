@@ -12,7 +12,7 @@ public class Menu {
         return x.toLowerCase();
     }
 
-    public static String searchAnime(Website web) {
+    public static Anime searchAnime(Website web) {
         Scanner input= new Scanner(System.in); 
         System.out.print("Cari Anime : "); String query = input.nextLine();
         Anime[] animes = web.searchAnime(query);
@@ -22,7 +22,9 @@ public class Menu {
             i++;
         }
         System.out.print("\nPilih Anime : "); i = Integer.valueOf(input.nextLine());
-        return animes[i-1].getLink();
+        Anime anime = web.getAnimeDetails(animes[i-1]);
+        anime = web.getEpList(anime);
+        return anime;
     }
 
 }

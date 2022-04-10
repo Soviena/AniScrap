@@ -27,4 +27,21 @@ public class Website {
         }
         return animes;
     }
+
+    public Anime getAnimeDetails(Anime anime){
+        anime.setDesc(Scrapper.parseWeb(anime.getLink()).getElementsByClass("entry-content").first().text());
+        return anime;
+    }
+
+    public Anime getEpList(Anime anime){
+        Elements listOfEp = Scrapper.parseWeb(anime.getLink()).getElementsByClass("eplister").first().getElementsByTag("a");
+        String[] eps = new String[listOfEp.size()];
+        int i = 0;
+        for (Element ep: listOfEp) {
+            eps[i] = ep.attr("href");
+            i++;
+        }
+        anime.setEpList(eps);
+        return anime;
+    }
 }
