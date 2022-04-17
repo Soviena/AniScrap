@@ -14,6 +14,8 @@ public class Anime {
         setTitle(title);
         setLink(link);
     }
+    public Anime() {
+    }
     
     public void setDesc(String desc){
         this.desc = desc;

@@ -27,4 +27,18 @@ public class Menu {
         return anime;
     }
 
+    public static Anime recentUpload(Website web){
+        Scanner input= new Scanner(System.in); 
+        Anime[] animes = web.searchAnime("");
+        int i = 1;
+        for (Anime anime : animes) {
+            System.out.printf("[%d] %s\n",i,anime.getTitle().replaceAll("Nonton anime ", "").replaceAll("Sub Indo", ""));
+            i++;
+        }
+        System.out.print("\nPilih Anime : "); i = Integer.valueOf(input.nextLine());
+        Anime anime = web.getAnimeDetails(animes[i-1]);
+        anime = web.getEpList(anime);
+        return anime;        
+    }
+
 }
