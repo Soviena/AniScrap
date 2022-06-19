@@ -31,12 +31,12 @@ public class Website {
     }
 
     public void getAnimeDetails(Anime anime){
-        if (anime.getDesc() == null){
-            anime.setDesc(Scrapper.parseWeb(anime.getLink()).getElementsByClass("entry-content").first().text());
-        }
+        if(anime.getDesc() != null) return;
+        anime.setDesc(Scrapper.parseWeb(anime.getLink()).getElementsByClass("entry-content").first().text());
     }
 
     public void getEpList(Anime anime){
+        if(anime.getEpList() != null) return;
         Elements listOfEp = Scrapper.parseWeb(anime.getLink()).getElementsByClass("eplister").first().getElementsByTag("a");
         String[] eps = new String[listOfEp.size()];
         int i = 0;
