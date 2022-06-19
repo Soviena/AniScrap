@@ -1,6 +1,6 @@
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import java.util.Scanner;
+// import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,18 +24,19 @@ public class Website {
             rawAnimes.addAll(article.getElementsByTag("a"));
         }
         for (Element anime : rawAnimes) {
-            animes[i] = new Anime(anime.attr("title"),anime.attr("href"));
+            animes[i] = new Anime(anime.attr("title").replaceAll("Nonton anime ", "").replaceAll("Sub Indo", ""),anime.attr("href"));
             i++;
         }
         return animes;
     }
 
-    public Anime getAnimeDetails(Anime anime){
-        anime.setDesc(Scrapper.parseWeb(anime.getLink()).getElementsByClass("entry-content").first().text());
-        return anime;
+    public void getAnimeDetails(Anime anime){
+        if (anime.getDesc() == null){
+            anime.setDesc(Scrapper.parseWeb(anime.getLink()).getElementsByClass("entry-content").first().text());
+        }
     }
 
-    public Anime getEpList(Anime anime){
+    public void getEpList(Anime anime){
         Elements listOfEp = Scrapper.parseWeb(anime.getLink()).getElementsByClass("eplister").first().getElementsByTag("a");
         String[] eps = new String[listOfEp.size()];
         int i = 0;
@@ -44,17 +45,16 @@ public class Website {
             i++;
         }
         anime.setEpList(eps);
-        return anime;
     }
 
     public String selectMirror(String eplink){
-        Scanner inp = new Scanner(System.in);
+        // Scanner inp = new Scanner(System.in);
         Elements vidServer = Scrapper.parseWeb(eplink).getElementsByClass("mirror").first().getElementsByTag("option");
-        for (int i = 1; i < vidServer.size(); i++) {
-            System.out.printf("[%d] %s\n",i,vidServer.get(i).text());            
-        }
-        System.out.print("Pilih Source : "); int x = Integer.valueOf(inp.nextLine());
-        String rawlink = vidServer.get(x).attr("value");
+        // for (int i = 1; i < vidServer.size(); i++) {
+        //     System.out.printf("[%d] %s\n",i,vidServer.get(i).text());            
+        // }
+        // System.out.print("Pilih Source : "); int x = Integer.valueOf(inp.nextLine());
+        String rawlink = vidServer.get(2).attr("value");
         String link = Scrapper.decodeBase64(rawlink);
         Pattern srcpat = Pattern.compile("src=\"(.*?)\"");
         Matcher srcmat = srcpat.matcher(link);

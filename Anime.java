@@ -48,4 +48,9 @@ public class Anime {
     public String[] getEpList(){
         return this.eplist;
     }
+
+    @Override
+    public String toString(){
+        return this.title;
+    }
 }
