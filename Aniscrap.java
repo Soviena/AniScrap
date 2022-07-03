@@ -1,13 +1,6 @@
 import java.io.IOException;
-import java.time.LocalDate;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -170,6 +163,12 @@ public class Aniscrap extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Cari", panel_cari);
 
+        panel_history.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                panel_historyFocusGained(evt);
+            }
+        });
+
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -260,12 +259,19 @@ public class Aniscrap extends javax.swing.JFrame {
         String link = anoboy.selectMirror(anime.getEpList()[anime.getEpList().length-Integer.valueOf(this.spin_eps.getModel().getValue().toString())]);
         link = Scrapper.uservideo(link);
         try {
+            Date now = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            dbqueryMaker.insertSql(anime.getTitle(), anime.getLink(), anime.getDesc(), dbqueryMaker.arrayToString(anime.getEpList()), formatter.format(now));
             Runtime.getRuntime().exec("mpv "+link);
         } catch (IOException e) {
             System.out.println(e.toString());
             e.printStackTrace();
         }        
     }//GEN-LAST:event_btn_tontontActionPerformed
+
+    private void panel_historyFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_panel_historyFocusGained
+        
+    }//GEN-LAST:event_panel_historyFocusGained
 
     /**
      * @param args the command line arguments

@@ -2,6 +2,7 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "ojdbc8.jar",
-        "ucp.jar"
+        "ucp.jar",
+        "mysql-connector-java-8.0.29.jar"
     ]
 }

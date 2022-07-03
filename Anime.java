@@ -1,4 +1,5 @@
 public class Anime {
+    private int id;
     private String title;
     private String link;
     private String thumbLink;
@@ -15,6 +16,10 @@ public class Anime {
         setLink(link);
     }
     public Anime() {
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
     
     public void setDesc(String desc){
@@ -47,6 +52,10 @@ public class Anime {
     }
     public String[] getEpList(){
         return this.eplist;
+    }
+
+    public int getId(){
+        return this.id;
     }
 
     @Override
