@@ -46,11 +46,17 @@ public class Aniscrap extends javax.swing.JFrame {
         spin_eps = new javax.swing.JSpinner();
         panel_history = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        list_history = new javax.swing.JList<>();
+        lbl_nama = new javax.swing.JLabel();
+        lbl_epProgrss = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        btn_lanjut = new javax.swing.JButton();
+        lbl_outTitle = new javax.swing.JLabel();
+        lbl_progress = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lbl_maxEps = new javax.swing.JLabel();
+        lbl_date = new javax.swing.JLabel();
+        btn_hapus = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -169,20 +175,56 @@ public class Aniscrap extends javax.swing.JFrame {
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        list_history.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                list_historyValueChanged(evt);
+            }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(list_history);
 
-        jLabel1.setText("Judul");
+        lbl_nama.setText("Judul");
 
-        jLabel2.setText("Episode");
+        lbl_epProgrss.setText("Episode");
 
         jLabel3.setText("Tanggal");
 
-        jButton3.setText("jButton3");
+        btn_lanjut.setText("Lanjut");
+        btn_lanjut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_lanjutActionPerformed(evt);
+            }
+        });
+
+        lbl_outTitle.setText("lbl_outTitle");
+        lbl_outTitle.setMaximumSize(new java.awt.Dimension(300, 17));
+        lbl_outTitle.setMinimumSize(new java.awt.Dimension(300, 17));
+        lbl_outTitle.setPreferredSize(new java.awt.Dimension(300, 17));
+
+        lbl_progress.setText("7");
+        lbl_progress.setMaximumSize(new java.awt.Dimension(50, 17));
+        lbl_progress.setMinimumSize(new java.awt.Dimension(50, 17));
+        lbl_progress.setPreferredSize(new java.awt.Dimension(50, 17));
+        lbl_progress.setRequestFocusEnabled(false);
+
+        jLabel6.setText("/");
+
+        lbl_maxEps.setText("12");
+        lbl_maxEps.setMaximumSize(new java.awt.Dimension(50, 17));
+        lbl_maxEps.setMinimumSize(new java.awt.Dimension(50, 17));
+        lbl_maxEps.setPreferredSize(new java.awt.Dimension(50, 17));
+        lbl_maxEps.setRequestFocusEnabled(false);
+
+        lbl_date.setText("2022-04-04");
+        lbl_date.setMaximumSize(new java.awt.Dimension(100, 17));
+        lbl_date.setMinimumSize(new java.awt.Dimension(100, 17));
+        lbl_date.setPreferredSize(new java.awt.Dimension(100, 17));
+
+        btn_hapus.setText("Hapus");
+        btn_hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_hapusActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel_historyLayout = new javax.swing.GroupLayout(panel_history);
         panel_history.setLayout(panel_historyLayout);
@@ -193,11 +235,26 @@ public class Aniscrap extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(panel_historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jButton3))
-                .addContainerGap(446, Short.MAX_VALUE))
+                    .addGroup(panel_historyLayout.createSequentialGroup()
+                        .addComponent(btn_lanjut)
+                        .addGap(90, 90, 90)
+                        .addComponent(btn_hapus))
+                    .addGroup(panel_historyLayout.createSequentialGroup()
+                        .addGroup(panel_historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_nama)
+                            .addComponent(lbl_epProgrss)
+                            .addComponent(jLabel3))
+                        .addGap(51, 51, 51)
+                        .addGroup(panel_historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panel_historyLayout.createSequentialGroup()
+                                .addComponent(lbl_progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(lbl_maxEps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lbl_outTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
         panel_historyLayout.setVerticalGroup(
             panel_historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,14 +264,24 @@ public class Aniscrap extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(panel_historyLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(jLabel1)
+                .addGroup(panel_historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_nama)
+                    .addComponent(lbl_outTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addGroup(panel_historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_epProgrss)
+                    .addComponent(lbl_progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(lbl_maxEps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panel_historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panel_historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_lanjut)
+                    .addComponent(btn_hapus))
+                .addGap(15, 15, 15))
         );
 
         jTabbedPane1.addTab("History", panel_history);
@@ -270,8 +337,21 @@ public class Aniscrap extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_tontontActionPerformed
 
     private void panel_historyFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_panel_historyFocusGained
-        
     }//GEN-LAST:event_panel_historyFocusGained
+    
+    private void btn_lanjutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lanjutActionPerformed
+        // TODO add your handling code here:
+        Anime[] animes = dbqueryMaker.getSql();
+        this.list_history.setListData(animes);
+    }//GEN-LAST:event_btn_lanjutActionPerformed
+
+    private void btn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hapusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_hapusActionPerformed
+
+    private void list_historyValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_list_historyValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_list_historyValueChanged
 
     /**
      * @param args the command line arguments
@@ -312,19 +392,25 @@ public class Aniscrap extends javax.swing.JFrame {
     private javax.swing.JSpinner spin_eps;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cari;
+    private javax.swing.JButton btn_hapus;
+    private javax.swing.JButton btn_lanjut;
     private javax.swing.JButton btn_tontont;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lbl_date;
+    private javax.swing.JLabel lbl_epProgrss;
     private javax.swing.JLabel lbl_eps;
     private javax.swing.JLabel lbl_judul;
+    private javax.swing.JLabel lbl_maxEps;
+    private javax.swing.JLabel lbl_nama;
+    private javax.swing.JLabel lbl_outTitle;
+    private javax.swing.JLabel lbl_progress;
     private javax.swing.JLabel lbl_sinopsis;
+    private javax.swing.JList<Anime> list_history;
     private javax.swing.JList<Anime> list_search_anime;
     private javax.swing.JPanel panel_cari;
     private javax.swing.JPanel panel_history;

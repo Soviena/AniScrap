@@ -1,5 +1,15 @@
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class test {
     // public static void main(String[] args) {
     //     String[] eplist = {
@@ -21,7 +31,9 @@ public class test {
     // }
 
     public static void main(String[] args) {
-        String link = "https://anoboy.online/anime/spy-x-family";
-        System.out.println(link.substring(28));
+        Anime[] animes = dbqueryMaker.getSql();
+        for (Anime anime : animes) {
+            System.out.println(anime.getId());
+        }
     }
 }

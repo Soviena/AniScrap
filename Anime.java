@@ -5,6 +5,15 @@ public class Anime {
     private String thumbLink;
     private String desc;
     private String[] eplist;
+    private int eps;
+
+    public Anime(String id, String title, String link, String[] eplist, int eps){
+        setTitle(title);
+        setLink(link);
+        setId(id);
+        setEpList(eplist);
+        setEps(eps);
+    }
 
     public Anime(String title, String link, String thumblink){
         setTitle(title);
@@ -12,11 +21,13 @@ public class Anime {
         setThumbLink(thumblink);
         setId(link.substring(28));
     }
+
     public Anime(String title, String link){
         setTitle(title);
         setLink(link);
         setId(link.substring(28));
     }
+
     public Anime() {
     }
 
@@ -35,9 +46,11 @@ public class Anime {
     public void setEpList(String[] link){
         this.eplist = link;
     }
-
     public void setId(String id){
         this.id = id;
+    }
+    public void setEps(int eps){
+        this.eps = eps;
     }
 
     public String getDesc(){
@@ -55,9 +68,11 @@ public class Anime {
     public String[] getEpList(){
         return this.eplist;
     }
-
     public String getId(){
         return this.id;
+    }
+    public int getEps(){
+        return this.eps;
     }
 
     @Override

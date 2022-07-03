@@ -7,18 +7,32 @@ import java.util.logging.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class dbqueryMaker {
-    public static void getSql(){
+    public static Anime[] getSql(){
         try {            
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/pegawai?" +
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/anime_history?" +
                                    "user=root&password=");
             if (conn != null) {
                 System.out.println("Connected");
             }
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM pegawai");            
+            ResultSet rs = stmt.executeQuery("SELECT id, title, link, eps, JSON_EXTRACT(eplist,'$[*]') as eplist FROM anime");
+            String eps = "";
+            String[] epslist;
+            List<Anime> animes = new ArrayList<Anime>();
+            while (rs.next()) {
+                eps = rs.getString("eplist");
+                eps = eps.replace("[", "").replace("]", "").replace("\"", "").replace(" ", "");
+                epslist = eps.split(",");
+                animes.add(new Anime(rs.getString("id"),rs.getString("title"),rs.getString("link"),epslist,rs.getInt("eps")));
+            }
+            Anime[] arrayofAnime = new Anime[animes.size()];
+            for (int j = 0; j < animes.size(); j++) {
+                arrayofAnime[j] = animes.get(j);
+            }
             // while (rs.next()) {
             //     list_pegawai.add(new Pegawai(rs.getInt("id"),rs.getString("nama"),rs.getString("posisi"),rs.getDate("tgl_lahir").toLocalDate()));
             // }
@@ -29,10 +43,13 @@ public class dbqueryMaker {
             // }
             // jlist_pegawai.setListData(pegawai);
             conn.close();
+            return arrayofAnime;
         } catch (SQLException ex) {
             System.out.println(ex.toString());
+            return null;
         } catch (Exception e){
             System.out.println(e.toString());
+            return null;
         }
     }
 
@@ -46,7 +63,7 @@ public class dbqueryMaker {
             }
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM anime WHERE id LIKE '"+id+"'");
-            if (rs.getFetchSize() == 0){
+            if (rs.next()){
                 stmt.executeUpdate("INSERT INTO `anime` (`id`, `title`, `link`, `sinopsis`, `eplist`, `lastwatch`, `eps`) VALUES ('"+id+"', '"+title+"','"+link+"' ,'"+sinopsis+"' , '"+eplist+"', '"+datenow+"',"+String.valueOf(eps)+");");            
             }else{
                 stmt.executeUpdate("UPDATE `anime` SET `eplist`='"+eplist+"', `lastwatch`='"+datenow+"', `eps`="+String.valueOf(eps)+" WHERE `id`="+id+";");
