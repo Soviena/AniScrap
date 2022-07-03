@@ -36,7 +36,7 @@ public class dbqueryMaker {
         }
     }
 
-    public static void insertSql(String title, String link, String sinopsis, String eplist, String datenow){
+    public static void insertSql(String id, String title, String link, String sinopsis, String eplist, String datenow, int eps){
         try {            
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/anime_history?" +
@@ -45,7 +45,12 @@ public class dbqueryMaker {
                 System.out.println("Connected");
             }
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO `anime` (`id`, `title`, `link`, `sinopsis`, `eplist`, `lastwatch`) VALUES (NULL, '"+title+"','"+link+"' ,'"+sinopsis+"' , '"+eplist+"', '"+datenow+"');");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM anime WHERE id LIKE '"+id+"'");
+            if (rs.getFetchSize() == 0){
+                stmt.executeUpdate("INSERT INTO `anime` (`id`, `title`, `link`, `sinopsis`, `eplist`, `lastwatch`, `eps`) VALUES ('"+id+"', '"+title+"','"+link+"' ,'"+sinopsis+"' , '"+eplist+"', '"+datenow+"',"+String.valueOf(eps)+");");            
+            }else{
+                stmt.executeUpdate("UPDATE `anime` SET `eplist`='"+eplist+"', `lastwatch`='"+datenow+"', `eps`="+String.valueOf(eps)+" WHERE `id`="+id+";");
+            }
             // ResultSet rs = stmt.executeQuery("SELECT * FROM pegawai");
             conn.close();
         } catch (SQLException ex) {
@@ -53,6 +58,25 @@ public class dbqueryMaker {
         } catch (Exception e){
             System.out.println(e.toString());
         }
+    }
+
+    public static void updateSql(String eplist, String datenow, int eps){
+        // try {            
+        //     Class.forName("com.mysql.cj.jdbc.Driver");
+        //     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/anime_history?" +
+        //                            "user=root&password=");
+        //     if (conn != null) {
+        //         System.out.println("Connected");
+        //     }
+        //     Statement stmt = conn.createStatement();
+        //     stmt.executeUpdate("INSERT INTO `anime` (`id`, `title`, `link`, `sinopsis`, `eplist`, `lastwatch`) VALUES (NULL, '"+title+"','"+link+"' ,'"+sinopsis+"' , '"+eplist+"', '"+datenow+"');");
+        //     // ResultSet rs = stmt.executeQuery("SELECT * FROM pegawai");
+        //     conn.close();
+        // } catch (SQLException ex) {
+        //     System.out.println(ex.toString());
+        // } catch (Exception e){
+        //     System.out.println(e.toString());
+        // }
     }
 
     public static String arrayToString(String[] eplist){

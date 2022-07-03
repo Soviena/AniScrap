@@ -260,8 +260,8 @@ public class Aniscrap extends javax.swing.JFrame {
         link = Scrapper.uservideo(link);
         try {
             Date now = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            dbqueryMaker.insertSql(anime.getTitle(), anime.getLink(), anime.getDesc(), dbqueryMaker.arrayToString(anime.getEpList()), formatter.format(now));
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");            
+            dbqueryMaker.insertSql(anime.getId() ,anime.getTitle(), anime.getLink(), anime.getDesc(), dbqueryMaker.arrayToString(anime.getEpList()), formatter.format(now), Integer.valueOf(this.spin_eps.getModel().getValue().toString()));
             Runtime.getRuntime().exec("mpv "+link);
         } catch (IOException e) {
             System.out.println(e.toString());

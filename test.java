@@ -14,9 +14,14 @@ public class test {
     //     System.out.println(literalArray);
     // }
 
+    // public static void main(String[] args) {
+    //     Date now = new Date();
+    //     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    //     System.out.println(formatter.format(now));
+    // }
+
     public static void main(String[] args) {
-        Date now = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(formatter.format(now));
+        String link = "https://anoboy.online/anime/spy-x-family";
+        System.out.println(link.substring(28));
     }
 }
