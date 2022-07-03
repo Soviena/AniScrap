@@ -60,6 +60,12 @@ public class Aniscrap extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
+
         btn_cari.setText("Cari");
         btn_cari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,6 +178,11 @@ public class Aniscrap extends javax.swing.JFrame {
         panel_history.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 panel_historyFocusGained(evt);
+            }
+        });
+        panel_history.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel_historyMouseClicked(evt);
             }
         });
 
@@ -340,18 +351,52 @@ public class Aniscrap extends javax.swing.JFrame {
     }//GEN-LAST:event_panel_historyFocusGained
     
     private void btn_lanjutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_lanjutActionPerformed
-        // TODO add your handling code here:
-        Anime[] animes = dbqueryMaker.getSql();
-        this.list_history.setListData(animes);
+        Anime anime = this.list_history.getSelectedValue();
+        anime.setEps(anime.getEps()+1);
+        String link = anoboy.selectMirror(anime.getEpList()[anime.getEpList().length-(anime.getEps())]);
+        link = Scrapper.uservideo(link);
+        try {
+            Date now = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");            
+            dbqueryMaker.insertSql(anime.getId() ,anime.getTitle(), anime.getLink(), anime.getDesc(), dbqueryMaker.arrayToString(anime.getEpList()), formatter.format(now), anime.getEps());
+            this.lbl_progress.setText(String.valueOf(anime.getEps()));
+            Runtime.getRuntime().exec("mpv "+link);
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            e.printStackTrace();
+        }     
     }//GEN-LAST:event_btn_lanjutActionPerformed
 
     private void btn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hapusActionPerformed
-        // TODO add your handling code here:
+        Anime anime = this.list_history.getSelectedValue();
+        dbqueryMaker.deleteSql(anime.getId());
+        Anime[] animes = dbqueryMaker.getSql();
+        this.list_history.setListData(animes);
     }//GEN-LAST:event_btn_hapusActionPerformed
 
     private void list_historyValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_list_historyValueChanged
-        // TODO add your handling code here:
+        int epsProgress = list_history.getSelectedValue().getEps();
+        int maxEps = list_history.getSelectedValue().getEpList().length;
+        this.lbl_outTitle.setText(list_history.getSelectedValue().getTitle());
+        this.lbl_date.setText(list_history.getSelectedValue().getLastWatch());
+        this.lbl_progress.setText(String.valueOf(epsProgress));
+        this.lbl_maxEps.setText(String.valueOf(maxEps));
+        if(epsProgress == maxEps){
+            this.btn_lanjut.setEnabled(false);
+        }else{
+            this.btn_lanjut.setEnabled(true);
+        }
+
     }//GEN-LAST:event_list_historyValueChanged
+
+    private void panel_historyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel_historyMouseClicked
+    }//GEN-LAST:event_panel_historyMouseClicked
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        // TODO add your handling code here:
+        Anime[] animes = dbqueryMaker.getSql();
+        this.list_history.setListData(animes);
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     /**
      * @param args the command line arguments

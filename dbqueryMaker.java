@@ -15,11 +15,11 @@ public class dbqueryMaker {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/anime_history?" +
                                    "user=root&password=");
-            if (conn != null) {
-                System.out.println("Connected");
+            if (conn == null) {
+                System.out.println("Failed to connect database");
             }
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id, title, link, eps, JSON_EXTRACT(eplist,'$[*]') as eplist FROM anime");
+            ResultSet rs = stmt.executeQuery("SELECT id, title, link, eps, lastwatch, JSON_EXTRACT(eplist,'$[*]') as eplist FROM anime");
             String eps = "";
             String[] epslist;
             List<Anime> animes = new ArrayList<Anime>();
@@ -27,7 +27,7 @@ public class dbqueryMaker {
                 eps = rs.getString("eplist");
                 eps = eps.replace("[", "").replace("]", "").replace("\"", "").replace(" ", "");
                 epslist = eps.split(",");
-                animes.add(new Anime(rs.getString("id"),rs.getString("title"),rs.getString("link"),epslist,rs.getInt("eps")));
+                animes.add(new Anime(rs.getString("id"),rs.getString("title"),rs.getString("link"),epslist,rs.getInt("eps"), rs.getDate("lastwatch").toString()));
             }
             Anime[] arrayofAnime = new Anime[animes.size()];
             for (int j = 0; j < animes.size(); j++) {
@@ -64,9 +64,9 @@ public class dbqueryMaker {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM anime WHERE id LIKE '"+id+"'");
             if (rs.next()){
-                stmt.executeUpdate("INSERT INTO `anime` (`id`, `title`, `link`, `sinopsis`, `eplist`, `lastwatch`, `eps`) VALUES ('"+id+"', '"+title+"','"+link+"' ,'"+sinopsis+"' , '"+eplist+"', '"+datenow+"',"+String.valueOf(eps)+");");            
+                stmt.executeUpdate("UPDATE `anime` SET `eplist`='"+eplist+"', `lastwatch`='"+datenow+"', `eps`="+String.valueOf(eps)+" WHERE `id`='"+id+"';");
             }else{
-                stmt.executeUpdate("UPDATE `anime` SET `eplist`='"+eplist+"', `lastwatch`='"+datenow+"', `eps`="+String.valueOf(eps)+" WHERE `id`="+id+";");
+                stmt.executeUpdate("INSERT INTO `anime` (`id`, `title`, `link`, `sinopsis`, `eplist`, `lastwatch`, `eps`) VALUES ('"+id+"', '"+title+"','"+link+"' ,'"+sinopsis+"' , '"+eplist+"', '"+datenow+"',"+String.valueOf(eps)+");");            
             }
             // ResultSet rs = stmt.executeQuery("SELECT * FROM pegawai");
             conn.close();
@@ -77,23 +77,23 @@ public class dbqueryMaker {
         }
     }
 
-    public static void updateSql(String eplist, String datenow, int eps){
-        // try {            
-        //     Class.forName("com.mysql.cj.jdbc.Driver");
-        //     Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/anime_history?" +
-        //                            "user=root&password=");
-        //     if (conn != null) {
-        //         System.out.println("Connected");
-        //     }
-        //     Statement stmt = conn.createStatement();
-        //     stmt.executeUpdate("INSERT INTO `anime` (`id`, `title`, `link`, `sinopsis`, `eplist`, `lastwatch`) VALUES (NULL, '"+title+"','"+link+"' ,'"+sinopsis+"' , '"+eplist+"', '"+datenow+"');");
-        //     // ResultSet rs = stmt.executeQuery("SELECT * FROM pegawai");
-        //     conn.close();
-        // } catch (SQLException ex) {
-        //     System.out.println(ex.toString());
-        // } catch (Exception e){
-        //     System.out.println(e.toString());
-        // }
+    public static void deleteSql(String id){
+        try {            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/anime_history?" +
+                                   "user=root&password=");
+            if (conn != null) {
+                System.out.println("Connected");
+            }
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM `anime` WHERE `id`='"+id+"';");
+            // ResultSet rs = stmt.executeQuery("SELECT * FROM pegawai");
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        } catch (Exception e){
+            System.out.println(e.toString());
+        }
     }
 
     public static String arrayToString(String[] eplist){

@@ -6,13 +6,15 @@ public class Anime {
     private String desc;
     private String[] eplist;
     private int eps;
+    private String lastWatch;
 
-    public Anime(String id, String title, String link, String[] eplist, int eps){
+    public Anime(String id, String title, String link, String[] eplist, int eps, String lastWatch){
         setTitle(title);
         setLink(link);
         setId(id);
         setEpList(eplist);
         setEps(eps);
+        setLastWatch(lastWatch);
     }
 
     public Anime(String title, String link, String thumblink){
@@ -52,6 +54,9 @@ public class Anime {
     public void setEps(int eps){
         this.eps = eps;
     }
+    public void setLastWatch(String date){
+        this.lastWatch = date;
+    }
 
     public String getDesc(){
         return this.desc;
@@ -73,6 +78,9 @@ public class Anime {
     }
     public int getEps(){
         return this.eps;
+    }
+    public String getLastWatch(){
+        return this.lastWatch;
     }
 
     @Override
