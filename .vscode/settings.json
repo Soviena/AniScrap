@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "ojdbc8.jar",
+        "ucp.jar"
+    ]
+}
